@@ -4,7 +4,8 @@
 var util = require('util'),
     redis   = require('redis'),
     Q       = require('q'),
-    events  = require('events');
+    events  = require('events'),
+    trace   = require('./trace.js')('redis::datasource');
 
 /**
  *
@@ -18,7 +19,7 @@ var source = new Datasource.node({
 var mod = {
   RedisDatasource: {
     node: function(configuration){
-      console.log(util.format('host: %s, port: %d, pool: %d', configuration.host, configuration.port, configuration.poolSize));
+      trace(util.format('host: %s, port: %d, pool: %d', configuration.host, configuration.port, configuration.poolSize));
       events.EventEmitter.call(this);
 
       var self = this;
