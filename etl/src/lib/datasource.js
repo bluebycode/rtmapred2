@@ -4,8 +4,7 @@
 var util = require('util'),
     redis   = require('redis'),
     Q       = require('q'),
-    events  = require('events'),
-    _       = require('underscore');
+    events  = require('events');
 
 /**
  *
@@ -72,9 +71,9 @@ var mod = {
       };
 
       // Desplegando premisas de conexiones sobre la fuente de datos
-      var _future_connections = _.range(this._maxConnections).map(function(n){
+      var _future_connections = Array.apply(null, Array(this._maxConnections)).map(function (_, n) {
         return self._create();
-      });
+      })
 
       // Una vez que todas las conexiones esten disponibles
       // se notificará por los eventos: ready e initialisated.

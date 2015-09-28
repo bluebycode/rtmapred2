@@ -2,27 +2,26 @@
 'use strict';
 
 var util    = require('util'),
-    fs      = require('fs'),
-    through = require('through');
+    stream  = require('stream'),
+    PassThrough  = stream.PassThrough || require('readable-stream').PassThrough;
 
-//var stream1 = new Streams.OutputFile('stream1.log');
+var OutputFileStream  = require('./streams/OutputFileStream.js').OutputFileStream,
+    SelectStream      = require('./streams/SelectStream.js').SelectStream;
 
 
-var mod = {
+var PasarelStream = function(id){
+  this._id = id;
+  PassThrough.call(this);
+};
+util.inherits(PasarelStream, PassThrough);
+
+module.exports = {
   Streams: {
-    OutputFile: function(filename){
-      var _throughpass = through(function(data){
-        console.log(util.format('[%s] received: %s\n', Date.now(), data));
-        this.queue(data);
-      });
-      _throughpass
-        .pipe(fs.createWriteStream(filename), {end: false});
-      return _throughpass;
-    },
-    Selector: function(streams){
-
-    }
+    OutputFile:   OutputFileStream,
+    Select:       SelectStream,
+    Pasarel:      PasarelStream
   }
 };
 
-module.exports = mod;
+
+
